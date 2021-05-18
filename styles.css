@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;600&display=swap');
+
+* {
+    font-family: 'Quicksand', sans-serif;
+}
+
+body {
+    background-color: lightblue;
+    color: white;
+    position: relative;
+}
+
+#units {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background-color: inherit;
+}
+
+.unit {
+    margin: 0 5px;
+    border-radius: 50%;
+    width: 1.8rem;
+    height: 1.8rem;
+    outline: none;
+    border: 2px solid white;
+    background-color: lightblue;
+    font-weight: bold;
+    color: white;
+}
+
+.selected {
+    background-color: white;
+    color: lightblue;
+}
+
+form {
+    width: min-content;
+    display: flex;
+    flex-direction: column;
+    margin: 2rem auto;
+}
+
+#today {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+img {
+    width: 100%;
+    filter: invert(100%) sepia(100%) saturate(0%) brightness(102%) contrast(102%);
+}
+
+#weathertext > * {
+    font-size: 1.5rem;
+}
+
+#city, #temp {
+    font-size: clamp(1rem, -0.875rem + 8.333vw, 3rem);
+}
+
+#weathermain {
+    font-size: clamp(2rem, 0.1250rem + 8.3333vw, 4.5rem);
+}
+
+#minmax {
+    display: flex;
+    width: 15rem;
+    justify-content: space-between;
+}

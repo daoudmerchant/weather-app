@@ -6,6 +6,29 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
+    <form id="search">
+      <input id="citysearch" type="text" />
+      <button id="submit" type="submit">Search</button>
+    </form>
+    <div id="units">
+      <button id="centigrade" class="unit selected">C</button>
+      <button id="farenheit" class="unit">F</button>
+    </div>
+    <main>
+      <div id="today">
+        <img src="" alt="">
+        <div id="weathertext">
+          <p id="city"></p>
+          <p id="weathermain"></p>
+          <p id="temp"></p>
+          <div id="minmax">
+            <p id="hightemp"></p>
+            <p id="lowtemp"></p>
+          </div>
+        </div>
+      </div>
+
+    </main>
     <script src="scripts.js"></script>
   </body>
 </html>
