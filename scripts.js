@@ -1,8 +1,9 @@
-async function getWeather(city, units) {
+const getWeather = async function(city, units) {
     const formatData = function(data) {
         return {
             city: data.name,
             country: data.sys.country,
+            // necessary to make array?
             weather: [data.weather[0].main, data.weather[0].description],
             temp: data.main.temp,
             realfeel: data.main.feels_like,
@@ -20,7 +21,7 @@ async function getWeather(city, units) {
     return formatData(data);
 }
 
-const updateWeather = async function(city, units = "metric") {
+const updatePage = async function(city, units) {
     const icon = document.querySelector("img");
     const cityText = document.querySelector("#city");
     const weatherText = document.querySelector("#weathermain");
@@ -39,23 +40,26 @@ const updateWeather = async function(city, units = "metric") {
     lowTempText.textContent = `Min ${weatherObj.min}°`;
 }
 
-updateWeather("stockholm");
-
 const selectCity = (function() {
+	let currentCity = "stockholm";
     let currentUnits = "metric";
+    const updateWeather = () => updatePage(currentCity. currentUnits);
+
+	window.onload = updateWeather();
 
     const units = document.querySelectorAll(".unit");
     units.forEach(unit => unit.addEventListener("click", e => {
         if (e.target.classList.contains("selected")) { return }
-
-    }))
+		currentUnits = e.target.id;
+		updateWeather()
+    }
 
     const search = document.querySelector("#submit");
     search.addEventListener("click", e => {
         e.preventDefault();
-        const userCity = e.target.previousElementSibling.value;
-        updateWeather(userCity, currentUnits);
-        return false;
+        currentCity = e.target.previousElementSibling.value;
+        updateWeather();
+        // return false;
     })
 })();
 
