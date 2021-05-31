@@ -1,14 +1,19 @@
 const getWeather = async function(city, units) {
     const formatData = function(data) {
+        const round = num => {
+            const temp = num.toFixed(1);
+            // surely this can be done easier?
+            return (temp.charAt(temp.length - 1) !== "0") ? temp : temp.slice(0, -2);
+        };
         return {
             city: data.name,
             country: data.sys.country,
             // necessary to make array?
             weather: [data.weather[0].main, data.weather[0].description],
-            temp: data.main.temp,
-            realfeel: data.main.feels_like,
-            min: data.main.temp_min,
-            max: data.main.temp_max,
+            temp: round(data.main.temp),
+            realfeel: round(data.main.feels_like),
+            min: round(data.main.temp_min),
+            max: round(data.main.temp_max),
         };
     }
 
@@ -29,30 +34,42 @@ const updatePage = async function(city, units) {
     const highTempText = document.querySelector("#hightemp");
     const lowTempText = document.querySelector("#lowtemp");
 
-    const weatherObj = await getWeather(city, units);
+    try {
+        const weatherObj = await getWeather(city, units);
 
-    icon.src = `images/${weatherObj.weather[0]}.svg`
-    icon.alt = weatherObj.weather[0];
-    cityText.textContent = `${weatherObj.city}, ${weatherObj.country}`;
-    weatherText.textContent = weatherObj.weather[0];
-    tempText.textContent = `${weatherObj.temp}° (feels ${weatherObj.realfeel}°)`;
-    highTempText.textContent = `Max ${weatherObj.max}°`;
-    lowTempText.textContent = `Min ${weatherObj.min}°`;
+        icon.src = `images/${weatherObj.weather[0]}.svg`
+        icon.alt = weatherObj.weather[0];
+        cityText.textContent = `${weatherObj.city}, ${weatherObj.country}`;
+        weatherText.textContent = weatherObj.weather[0];
+        tempText.textContent = `${weatherObj.temp}° (feels ${weatherObj.realfeel}°)`;
+        highTempText.textContent = `Max ${weatherObj.max}°`;
+        lowTempText.textContent = `Min ${weatherObj.min}°`;
+    } catch (e) {
+        alert("Please make sure that you have entered a valid city");
+        console.error(e);
+    }
+
 }
 
 const selectCity = (function() {
 	let currentCity = "stockholm";
     let currentUnits = "metric";
-    const updateWeather = () => updatePage(currentCity. currentUnits);
+    const updateWeather = () => updatePage(currentCity, currentUnits);
 
-	window.onload = updateWeather();
+    // on load
+	updateWeather();
 
     const units = document.querySelectorAll(".unit");
-    units.forEach(unit => unit.addEventListener("click", e => {
-        if (e.target.classList.contains("selected")) { return }
-		currentUnits = e.target.id;
+    units.forEach(unit => unit.addEventListener("click", function toggleUnit() {
+        if (this.classList.contains("selected")) { return }
+        const otherUnit = (this.nextElementSibling) ?
+            this.nextElementSibling :
+            this.previousElementSibling;
+        otherUnit.classList.remove("selected");
+        this.classList.add("selected");
+		currentUnits = this.id;
 		updateWeather()
-    }
+    }));
 
     const search = document.querySelector("#submit");
     search.addEventListener("click", e => {
